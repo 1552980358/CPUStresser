@@ -5,24 +5,27 @@ void command_help() {
          << endl
          << "Command <help>: Show help message" << endl
          << endl
-         << "Command <start>: Start thread(s)"
+         << "Command <start>: Start thread(s)" << endl
          << endl
          << "Command <stop>: Stop all thread(s)" << endl
          << endl
-         << "Command <exit>: Stop all thread(s) and leave program" << endl;
+         << "Command <exit>: Stop all thread(s) and leave program" << endl
+         << endl;
     set_help();
+    cout << endl;
     add_help();
+    cout << endl;
     remove_help();
 }
 
 void set_help() {
-    cout << "<#/set> <NUMBER>: Set <NUMBER> threads" << endl
+    cout << "Command <#/set> <NUMBER>: Set <NUMBER> threads" << endl
          << "    Example: set 4 => Set 4 threads" << endl
          << "    Example: # 4   => Set 4 threads" << endl;
 }
 
 void add_help() {
-    cout << "<+/add> <NUMBER>: Add <NUMBER> threads" << endl
+    cout << "Command <+/add> <NUMBER>: Add <NUMBER> threads" << endl
          << "    Example: add 4 => Add 4 more threads" << endl
          << "    Example: + 4   => Add 4 more threads" << endl;
 }
