@@ -10,6 +10,7 @@ private:
     int _id;
     thread *_thread;
     bool _is_run;
+    bool _is_started;
 
     thread_t *_prev;
     thread_t *_next;
@@ -27,6 +28,8 @@ public:
     thread_t *get_next();
 
     bool is_run();
+    bool is_started() const;
+    void started();
 };
 
 

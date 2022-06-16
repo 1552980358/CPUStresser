@@ -19,7 +19,10 @@ thread_t::thread_t(thread_t *prev, const int &id) {
     _next = nullptr;
 
     _id = id;
+
+    _is_started = false;
     _is_run = true;
+
     _thread = new thread(thread_runnable, this, id);
 }
 
@@ -55,4 +58,12 @@ thread_t *thread_t::get_next() {
 
 bool thread_t::is_run() {
     return _is_run;
+}
+
+bool thread_t::is_started() const {
+    return _is_started;
+}
+
+void thread_t::started() {
+    _is_started = true;
 }
