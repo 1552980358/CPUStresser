@@ -5,9 +5,8 @@ using std::cout;
 using std::endl;
 
 void thread_runnable(thread_t *thread_ptr, const int &id) {
-    cout << "Thread #" << id << "started." << endl;
+    thread_ptr->started();
     while (thread_ptr->is_run()) {
-
     }
 }
 
