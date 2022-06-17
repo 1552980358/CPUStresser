@@ -3,7 +3,7 @@ project(CPUStresser)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_EXE_LINKER_FLAGS "-static")
-set(CMAKE_CXX_FLAGS "-mavx")
+set(CMAKE_CXX_FLAGS "-mavx512f -mavx -mavx2")
 
 include_directories(avx)
 
