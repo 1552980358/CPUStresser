@@ -3,10 +3,22 @@
 #include <iostream>
 using std::cout;
 using std::endl;
+using std::all_of;
+
+#include <iomanip>
+using std::left;
+using std::right;
+using std::setfill;
+using std::setw;
+
+#include <string>
+using std::to_string;
 
 #include "system_util.h"
 
 #define INITIAL_THREAD_SIZE 0
+#define START_THREAD_STATE_FILL '.'
+#define START_THREAD_STATE_W 5
 
 environment::environment() {
     _is_start = false;
@@ -25,10 +37,14 @@ void environment::start() {
         cout << "Now starting " << _thread_size << " thread(s)..." << endl;
         thread_t *current_thread_ptr = nullptr;
         for (int i = 0; i < _thread_size; ++i) {
+            cout << left << setfill(START_THREAD_STATE_FILL) << setw(START_THREAD_STATE_W) << "Launching thread #" + to_string(i);
             current_thread_ptr = new thread_t(current_thread_ptr, i);
             if (!_threads_first) {
                 _threads_first = current_thread_ptr;
             }
+            cout << "Launching";
+            while (!current_thread_ptr->is_started());
+            cout << "\b\b\b\b\b\b\b\b\bDone     " << endl;
         }
         _threads_last = current_thread_ptr;
     }
