@@ -31,3 +31,10 @@ void avx512_div_double(double *input, double *result) {
             result
     );
 }
+
+void copy_to_result(__m512d avx512_result, double *result) {
+    auto *avx512_double = (double *) &avx512_result;
+    for (int i = 0; i < 8; ++i) {
+        result[i] = avx512_double[i];
+    }
+}
