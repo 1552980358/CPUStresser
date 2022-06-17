@@ -67,7 +67,7 @@ void environment::add(const int &add_size) {
         _thread_size += add_size;
         return;
     }
-    thread_t *current_thread_t = _threads_first;
+    thread_t *current_thread_t = _threads_last;
     for (int i = 0; i < add_size; ++i) {
         current_thread_t = new thread_t(current_thread_t, _thread_size + i);
     }
@@ -117,7 +117,6 @@ void environment::show_thread_size() const {
     if (_is_start) {
         cout << "Now " << _thread_size << " thread(s) running." << endl;
     } else {
-        cout << "Now " << _thread_size << " thread(s) set." << endl;
-
+        cout << "Now " << _thread_size << " thread(s) set. " << endl;
     }
 }
