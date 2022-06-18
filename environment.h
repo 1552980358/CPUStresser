@@ -12,6 +12,8 @@ private:
 
     bool _is_start;
 
+    int _stress_mode;
+
 public:
     environment();
 
@@ -21,6 +23,9 @@ public:
     void add(const int &);
     void remove(const int &);
     void remove_all();
+
+    void set_mode(const int &);
+    int get_mode() const;
 
     void show_thread_size() const;
 };

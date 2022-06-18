@@ -15,6 +15,7 @@ using std::setw;
 using std::to_string;
 
 #include "system_util.h"
+#include "cpu_stress.h"
 
 #define INITIAL_THREAD_SIZE 0
 #define START_THREAD_STATE_FILL '.'
@@ -25,6 +26,7 @@ environment::environment() {
     _thread_size = INITIAL_THREAD_SIZE;
     _threads_first = nullptr;
     _threads_last = nullptr;
+    _stress_mode = STRESS_MODE_AVX2;
 }
 
 void environment::start() {
@@ -38,7 +40,7 @@ void environment::start() {
         thread_t *current_thread_ptr = nullptr;
         for (int i = 0; i < _thread_size; ++i) {
             cout << left << setfill(START_THREAD_STATE_FILL) << setw(START_THREAD_STATE_W) << "Launching thread #" + to_string(i);
-            current_thread_ptr = new thread_t(current_thread_ptr, i);
+            current_thread_ptr = new thread_t(current_thread_ptr, _stress_mode, i);
             if (!_threads_first) {
                 _threads_first = current_thread_ptr;
             }
@@ -69,7 +71,7 @@ void environment::add(const int &add_size) {
     }
     thread_t *current_thread_t = _threads_last;
     for (int i = 0; i < add_size; ++i) {
-        current_thread_t = new thread_t(current_thread_t, _thread_size + i);
+        current_thread_t = new thread_t(current_thread_t, _stress_mode, _thread_size + i);
     }
     _threads_last = current_thread_t;
     if (!_threads_first) {
@@ -111,6 +113,14 @@ void environment::remove_all() {
         current_thread_t = next;
     }
     _thread_size = INITIAL_THREAD_SIZE;
+}
+
+void environment::set_mode(const int &mode) {
+    _stress_mode = mode;
+}
+
+int environment::get_mode() const {
+    return _stress_mode;
 }
 
 void environment::show_thread_size() const {
