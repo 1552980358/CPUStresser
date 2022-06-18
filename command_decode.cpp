@@ -18,6 +18,7 @@ using std::vector;
 
 #include "string_util.h"
 #include "command_help.h"
+#include "cpu_stress.h"
 
 #define DELIM ' '
 #define COMMAND_START "start"
@@ -29,6 +30,8 @@ using std::vector;
 #define COMMAND_ADD_SIGN "+"
 #define COMMAND_REMOVE_STR "rm"
 #define COMMAND_REMOVE_SIGN "-"
+#define COMMAND_MODE_STR "mode"
+#define COMMAND_MODE_SIGN "$"
 
 vector<string> *split_str(const string &, const char & = DELIM);
 vector<string> *analysis_string_vector(vector<string> *, environment *);
@@ -67,6 +70,7 @@ void command_stop(environment *);
 void command_set(vector<string> *, environment *);
 void command_add(vector<string> *, environment *);
 void command_remove(vector<string> *, environment *);
+void command_mode(vector<string> *, environment *);
 
 vector<string> *analysis_string_vector(vector<string> *string_vector, environment *env_ptr) {
     string command;
@@ -82,6 +86,8 @@ vector<string> *analysis_string_vector(vector<string> *string_vector, environmen
         command_add(string_vector, env_ptr);
     } else if (command == COMMAND_REMOVE_SIGN || command == COMMAND_REMOVE_STR) {
         command_remove(string_vector, env_ptr);
+    } else if (command == COMMAND_MODE_STR || command == COMMAND_MODE_SIGN) {
+        command_mode(string_vector, env_ptr);
     }
     return string_vector;
 }
@@ -122,4 +128,22 @@ void command_remove(vector<string> *string_vector, environment *env_ptr) {
     env_ptr->remove(remove_number);
     cout << "Remove " << remove_number << " thread(s)." << endl;
     env_ptr->show_thread_size();
+}
+
+void command_mode(vector<string> *string_vector, environment *env_ptr) {
+    if (string_vector->size() == 1) {
+        return show_mode(env_ptr->get_mode());
+    }
+    int mode_number;
+    switch (mode_number = str_to_int(string_vector->at(1))) {
+        case STRESS_MODE_FPU:
+        case STRESS_MODE_AVX1:
+        case STRESS_MODE_AVX2:
+        case STRESS_MODE_AVX512F:
+            env_ptr->set_mode(mode_number);
+            break;
+        default:
+            mode_help();
+            break;
+    }
 }
