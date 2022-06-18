@@ -3,6 +3,8 @@
 
 int get_cpu_max_threads();
 
+void show_processor_name();
+
 struct cpu_instructions {
     //  Misc.
     bool HW_MMX;
