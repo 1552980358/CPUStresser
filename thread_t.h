@@ -16,8 +16,11 @@ private:
     thread_t *_next;
 
 public:
-    explicit thread_t(thread_t *, const int &);
+    explicit thread_t(thread_t *, const int &, const int &);
     ~thread_t();
+
+    double pi;
+    int64_t num;
 
     void stop();
 
@@ -27,8 +30,8 @@ public:
     thread_t *get_prev();
     thread_t *get_next();
 
-    bool is_run();
-    bool is_started() const;
+    [[nodiscard]] bool is_run() const;
+    [[nodiscard]] bool is_started() const;
     void started();
 };
 

@@ -1,42 +1,46 @@
 #include "thread_t.h"
+#include "cpu_stress.h"
+#include "avx128.h"
+#include "avx256.h"
+#include "avx512.h"
 
 #include <iostream>
 using std::cout;
 using std::endl;
 
-#include <immintrin.h>
-
-void avx256_double_div_infinitive(double *result, const __m256d &format, int64_t &num) {
-    __m256d result_div_infinitive = _mm256_div_pd(format, _mm256_set_pd((double) num, (double) (num + 2), (double) (num + 4), (double) (num + 6)));
-    auto * result_div = (double *) &result_div_infinitive;
-    for (int i = 0; i < 4; ++i) {
-        result[i] = result_div[i];
-    }
-    num += 8;
-}
-
-double avx128_double_sum(double *result_avx256) {
-    __m128d result_avx128 = _mm_add_pd(
-            _mm_set_pd(result_avx256[0], result_avx256[1]),
-            _mm_set_pd(result_avx256[2], result_avx256[3])
-            );
-    auto result = (double *) &result_avx128;
-    return result[0] + result[1];
-}
-
-void thread_runnable(thread_t *thread_ptr, const int &id) {
+void thread_runnable(thread_t *thread_ptr, const int &stress_mode, const int &id) {
     thread_ptr->started();
-    auto format = _mm256_set_pd((double) 4, (double) -4, (double) 4, (double) -4);
-    int64_t num = 1;
-    double pi = 0;
-    double buffer[4];
+    void (*stress_function)(int64_t *, double *, double *, double *);
+    double *buffer_input = nullptr;
+    double *buffer_result = nullptr;
+
+    switch (stress_mode) {
+        case STRESS_MODE_FPU:
+            stress_function = stress_mode_fpu;
+            break;
+        case STRESS_MODE_AVX1:
+            buffer_input = (double *) malloc(sizeof(double) * AVX128_BUFFER_INPUT_SIZE);
+            buffer_result = (double *) malloc(sizeof(double) * AVX128_BUFFER_RESULT_SIZE);
+            stress_function = stress_mode_avx1;
+            break;
+        case STRESS_MODE_AVX2:
+            buffer_input = (double *) malloc(sizeof(double) * AVX256_BUFFER_INPUT_SIZE);
+            buffer_result = (double *) malloc(sizeof(double) * AVX256_BUFFER_RESULT_SIZE);
+            stress_function = stress_mode_avx2;
+            break;
+        case STRESS_MODE_AVX512F:
+            buffer_input = (double *) malloc(sizeof(double) * AVX512_BUFFER_INPUT_SIZE);
+            buffer_result = (double *) malloc(sizeof(double) * AVX512_BUFFER_RESULT_SIZE);
+            stress_function = stress_mode_avx512f;
+            break;
+    }
+
     while (thread_ptr->is_run()) {
-        avx256_double_div_infinitive((double *) &buffer, format, num);
-        pi += avx128_double_sum((double *) &buffer);
+        stress_function((int64_t *) &thread_ptr->num, (double *) &thread_ptr->pi, buffer_input, buffer_result);
     }
 }
 
-thread_t::thread_t(thread_t *prev, const int &id) {
+thread_t::thread_t(thread_t *prev, const int &stress_mode, const int &id) {
     _prev = prev;
     if (prev) {
         prev->_next = this;
@@ -44,11 +48,13 @@ thread_t::thread_t(thread_t *prev, const int &id) {
     _next = nullptr;
 
     _id = id;
+    pi = 0;
+    num = -1;
 
     _is_started = false;
     _is_run = true;
 
-    _thread = new thread(thread_runnable, this, id);
+    _thread = new thread(thread_runnable, this, stress_mode, id);
 }
 
 void thread_t::stop() {
@@ -81,7 +87,7 @@ thread_t *thread_t::get_next() {
     return _next;
 }
 
-bool thread_t::is_run() {
+bool thread_t::is_run() const {
     return _is_run;
 }
 
