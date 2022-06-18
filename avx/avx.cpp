@@ -34,6 +34,14 @@ double avx256_pi_mix(double *buffer_input, double *buffer_result, int64_t &num) 
     return double_add_result(buffer_result);
 }
 
+double avx128_pi_mix(double *buffer_input, double *buffer_result, int64_t &num) {
+    assign_input(buffer_input, num, 2);
+
+    avx128_div_double(buffer_input, buffer_result);
+
+    return double_add_result(buffer_result);
+}
+
 void assign_input(double *buffer_input, int64_t &num, const int &repeat) {
     for (int i = 0; i < repeat; ++i) {
         buffer_input[i] = (i % 2) ? -4 : 4;
