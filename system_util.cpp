@@ -32,20 +32,23 @@ int get_cpu_max_threads() {
 void show_processor_name() {
     int cpu_id[4];
 
-    unsigned nExIds, i =  0;
     char cpu_name[0x40];
     // Get the information associated with each extended ID.
     cpuid(cpu_id, 0x80000000);
-    nExIds = cpu_id[0];
-    for (i=0x80000000; i<=nExIds; ++i) {
+    unsigned nExIds = cpu_id[0];
+    for (unsigned i = 0x80000000; i <= nExIds; ++i) {
         cpuid(cpu_id, i);
         // Interpret CPU brand string
-        if  (i == 0x80000002) {
-            memcpy(cpu_name, cpu_id, sizeof(int) * 4);
-        } else if  (i == 0x80000003) {
-            memcpy(cpu_name + 16, cpu_id, sizeof(int) * 4);
-        } else if  (i == 0x80000004) {
-            memcpy(cpu_name + 32, cpu_id, sizeof(int) * 4);
+        switch (i) { // NOLINT(hicpp-multiway-paths-covered)
+            case 0x80000002:
+                memcpy(cpu_name, cpu_id, sizeof(int) * 4);
+                break;
+            case 0x80000003:
+                memcpy(cpu_name + 16, cpu_id, sizeof(int) * 4);
+                break;
+            case 0x80000004:
+                memcpy(cpu_name + 32, cpu_id, sizeof(int) * 4);
+                break;
         }
     }
     cout << "Processor: " << endl
