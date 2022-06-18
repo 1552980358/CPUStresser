@@ -18,5 +18,6 @@ add_executable(CPUStresser
         avx/avx128.cpp
         avx/avx256.cpp
         avx/avx512.cpp
-        avx/avx.cpp avx/avx.h
+        avx/avx.cpp
+        cpu_stress.cpp
         )
