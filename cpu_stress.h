@@ -8,6 +8,8 @@
 #define STRESS_MODE_AVX2 2
 #define STRESS_MODE_AVX512F 3
 
+void stress_mode_fpu(int64_t *, double *, double *, double *);
+
 void stress_mode_avx1(int64_t *, double *, double *, double *);
 
 void stress_mode_avx2(int64_t *, double *, double *, double *);

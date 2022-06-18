@@ -1,6 +1,11 @@
 #include "cpu_stress.h"
 #include "avx.h"
 
+void stress_mode_fpu(int64_t *num, double *pi, double *, double *) {
+    *pi += 4 / (double) (*num += 2);
+    *pi -= 4 / (double) (*num += 2);
+}
+
 void stress_mode_avx1(int64_t *num, double *pi, double *buffer_input, double *buffer_result) {
     *pi += avx128_pi_mix(buffer_input, buffer_result, *num);
 }
