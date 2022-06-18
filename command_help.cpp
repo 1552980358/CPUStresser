@@ -16,6 +16,8 @@ void command_help() {
     add_help();
     cout << endl;
     remove_help();
+    cout << endl;
+    mode_help();
 }
 
 void set_help() {
@@ -34,4 +36,12 @@ void remove_help() {
     cout << "Command <-/rm> <NUMBER>: Remove <NUMBER> threads" << endl
          << "    Example: rm 4 =>  Remove 4 already added threads" << endl
          << "    Example: - 4  => Remove 4 already added threads" << endl;
+}
+
+void mode_help() {
+    cout << "Command <$/mode> <NUMBER>: Set stress mode" << endl
+         << "    MODE 0 => FPU stress" << endl
+         << "    MODE 1 => AVX1 + FPU mix mode stress" << endl
+         << "    MODE 2 => AVX2 + AVX1 + FPU mix mode stress" << endl
+         << "    MODE 3 => AVX512 + AVX2 + AVX1 + FPU mix mode stress" << endl;
 }
