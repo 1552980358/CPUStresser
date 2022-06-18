@@ -19,6 +19,7 @@ using std::vector;
 #include "string_util.h"
 #include "command_help.h"
 #include "cpu_stress.h"
+#include "system_util.h"
 
 #define DELIM ' '
 #define COMMAND_START "start"
@@ -32,6 +33,7 @@ using std::vector;
 #define COMMAND_REMOVE_SIGN "-"
 #define COMMAND_MODE_STR "mode"
 #define COMMAND_MODE_SIGN "$"
+#define COMMAND_CHECK "check"
 
 vector<string> *split_str(const string &, const char & = DELIM);
 vector<string> *analysis_string_vector(vector<string> *, environment *);
@@ -71,6 +73,7 @@ void command_set(vector<string> *, environment *);
 void command_add(vector<string> *, environment *);
 void command_remove(vector<string> *, environment *);
 void command_mode(vector<string> *, environment *);
+void command_check(vector<string> *, environment *);
 
 vector<string> *analysis_string_vector(vector<string> *string_vector, environment *env_ptr) {
     string command;
@@ -88,6 +91,8 @@ vector<string> *analysis_string_vector(vector<string> *string_vector, environmen
         command_remove(string_vector, env_ptr);
     } else if (command == COMMAND_MODE_STR || command == COMMAND_MODE_SIGN) {
         command_mode(string_vector, env_ptr);
+    } else if (command == COMMAND_CHECK) {
+        command_check(string_vector, env_ptr);
     }
     return string_vector;
 }
@@ -146,4 +151,13 @@ void command_mode(vector<string> *string_vector, environment *env_ptr) {
             mode_help();
             break;
     }
+}
+
+void command_check(vector<string> *, environment *) {
+    show_processor_name();
+
+    // Instruction sets
+    struct cpu_instructions instructions{};
+    check_instructions_supported((struct cpu_instructions *) &instructions);
+    show_supported_instructions((struct cpu_instructions *) &instructions);
 }
