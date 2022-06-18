@@ -26,7 +26,7 @@ void avx256_div_double(double *input, double *result) {
 
 void copy_to_result(const __m256d &avx256_result, double *result) {
     auto *avx256_double_result = (double *) &avx256_result;
-    for (int i = 0; i < 4; ++i) {
+    for (int i = 0; i < AVX256_BUFFER_RESULT_SIZE; ++i) {
         result[i] = avx256_double_result[i];
     }
 }
