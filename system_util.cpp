@@ -13,9 +13,9 @@ using std::thread;
  * Src: https://stackoverflow.com/a/7495023
  **/
 #ifdef _WIN32
-#define cpuid(info, leaf) __cpuidex(info, leaf, 0)
+#define cpuid(cpu_id, leaf) __cpuidex(cpu_id, leaf, 0)
 #else
-#define cpuid(info, level) __cpuid_count(level, 0, info[0], info[1], info[2], info[3])
+#define cpuid(cpu_id, level) __cpuid_count(level, 0, cpu_id[0], cpu_id[1], cpu_id[2], cpu_id[3])
 #endif
 
 int get_cpu_max_threads() {
@@ -27,59 +27,59 @@ int get_cpu_max_threads() {
 }
 
 void check_instructions_supported(struct cpu_instructions *instructions) {
-    int info[4];
+    int cpu_id[4];
 
-    cpuid((int *) &info, 0);
-    int nIds = info[0];
+    cpuid(cpu_id, 0);
+    int nIds = cpu_id[0];
 
-    cpuid((int *) &info, 0x80000000);
-    unsigned nExIds = info[0];
+    cpuid((int *) &cpu_id, 0x80000000);
+    unsigned nExIds = cpu_id[0];
     
     // Detect Features
     if (nIds >= 0x00000001){
-        cpuid((int *) &info, 0x00000001);
-        instructions->HW_MMX = (info[3] & ((int)1 << 23)) != 0;
-        instructions->HW_SSE    = (info[3] & ((int)1 << 25)) != 0;
-        instructions->HW_SSE2   = (info[3] & ((int)1 << 26)) != 0;
-        instructions->HW_SSE3   = (info[2] & ((int)1 <<  0)) != 0;
+        cpuid((int *) &cpu_id, 0x00000001);
+        instructions->HW_MMX = (cpu_id[3] & ((int) 1 << 23)) != 0;
+        instructions->HW_SSE    = (cpu_id[3] & ((int) 1 << 25)) != 0;
+        instructions->HW_SSE2   = (cpu_id[3] & ((int) 1 << 26)) != 0;
+        instructions->HW_SSE3   = (cpu_id[2] & ((int) 1 <<  0)) != 0;
 
-        instructions->HW_SSSE3  = (info[2] & ((int)1 <<  9)) != 0;
-        instructions->HW_SSE41  = (info[2] & ((int)1 << 19)) != 0;
-        instructions->HW_SSE42  = (info[2] & ((int)1 << 20)) != 0;
-        instructions->HW_AES    = (info[2] & ((int)1 << 25)) != 0;
+        instructions->HW_SSSE3  = (cpu_id[2] & ((int) 1 <<  9)) != 0;
+        instructions->HW_SSE41  = (cpu_id[2] & ((int) 1 << 19)) != 0;
+        instructions->HW_SSE42  = (cpu_id[2] & ((int) 1 << 20)) != 0;
+        instructions->HW_AES    = (cpu_id[2] & ((int) 1 << 25)) != 0;
 
-        instructions->HW_AVX    = (info[2] & ((int)1 << 28)) != 0;
-        instructions->HW_FMA3   = (info[2] & ((int)1 << 12)) != 0;
+        instructions->HW_AVX    = (cpu_id[2] & ((int) 1 << 28)) != 0;
+        instructions->HW_FMA3   = (cpu_id[2] & ((int) 1 << 12)) != 0;
 
-        instructions->HW_RDRAND = (info[2] & ((int)1 << 30)) != 0;
+        instructions->HW_RDRAND = (cpu_id[2] & ((int) 1 << 30)) != 0;
     }
     if (nIds >= 0x00000007){
-        cpuid((int *) &info, 0x00000007);
-        instructions->HW_AVX2   = (info[1] & ((int)1 <<  5)) != 0;
+        cpuid((int *) &cpu_id, 0x00000007);
+        instructions->HW_AVX2   = (cpu_id[1] & ((int) 1 <<  5)) != 0;
 
-        instructions->HW_BMI1        = (info[1] & ((int)1 <<  3)) != 0;
-        instructions->HW_BMI2        = (info[1] & ((int)1 <<  8)) != 0;
-        instructions->HW_ADX         = (info[1] & ((int)1 << 19)) != 0;
-        instructions->HW_SHA         = (info[1] & ((int)1 << 29)) != 0;
-        instructions->HW_PREFETCHWT1 = (info[2] & ((int)1 <<  0)) != 0;
+        instructions->HW_BMI1        = (cpu_id[1] & ((int) 1 <<  3)) != 0;
+        instructions->HW_BMI2        = (cpu_id[1] & ((int) 1 <<  8)) != 0;
+        instructions->HW_ADX         = (cpu_id[1] & ((int) 1 << 19)) != 0;
+        instructions->HW_SHA         = (cpu_id[1] & ((int) 1 << 29)) != 0;
+        instructions->HW_PREFETCHWT1 = (cpu_id[2] & ((int) 1 <<  0)) != 0;
 
-        instructions->HW_AVX512F     = (info[1] & ((int)1 << 16)) != 0;
-        instructions->HW_AVX512CD    = (info[1] & ((int)1 << 28)) != 0;
-        instructions->HW_AVX512PF    = (info[1] & ((int)1 << 26)) != 0;
-        instructions->HW_AVX512ER    = (info[1] & ((int)1 << 27)) != 0;
-        instructions->HW_AVX512VL    = (info[1] & ((int)1 << 31)) != 0;
-        instructions->HW_AVX512BW    = (info[1] & ((int)1 << 30)) != 0;
-        instructions->HW_AVX512DQ    = (info[1] & ((int)1 << 17)) != 0;
-        instructions->HW_AVX512IFMA  = (info[1] & ((int)1 << 21)) != 0;
-        instructions->HW_AVX512VBMI  = (info[2] & ((int)1 <<  1)) != 0;
+        instructions->HW_AVX512F     = (cpu_id[1] & ((int) 1 << 16)) != 0;
+        instructions->HW_AVX512CD    = (cpu_id[1] & ((int) 1 << 28)) != 0;
+        instructions->HW_AVX512PF    = (cpu_id[1] & ((int) 1 << 26)) != 0;
+        instructions->HW_AVX512ER    = (cpu_id[1] & ((int) 1 << 27)) != 0;
+        instructions->HW_AVX512VL    = (cpu_id[1] & ((int) 1 << 31)) != 0;
+        instructions->HW_AVX512BW    = (cpu_id[1] & ((int) 1 << 30)) != 0;
+        instructions->HW_AVX512DQ    = (cpu_id[1] & ((int) 1 << 17)) != 0;
+        instructions->HW_AVX512IFMA  = (cpu_id[1] & ((int) 1 << 21)) != 0;
+        instructions->HW_AVX512VBMI  = (cpu_id[2] & ((int) 1 <<  1)) != 0;
     }
     if (nExIds >= 0x80000001){
-        cpuid((int *) &info, 0x80000001);
-        instructions->HW_x64   = (info[3] & ((int)1 << 29)) != 0;
-        instructions->HW_ABM   = (info[2] & ((int)1 <<  5)) != 0;
-        instructions->HW_SSE4A = (info[2] & ((int)1 <<  6)) != 0;
-        instructions->HW_FMA4  = (info[2] & ((int)1 << 16)) != 0;
-        instructions->HW_XOP   = (info[2] & ((int)1 << 11)) != 0;
+        cpuid((int *) &cpu_id, 0x80000001);
+        instructions->HW_x64   = (cpu_id[3] & ((int) 1 << 29)) != 0;
+        instructions->HW_ABM   = (cpu_id[2] & ((int) 1 <<  5)) != 0;
+        instructions->HW_SSE4A = (cpu_id[2] & ((int) 1 <<  6)) != 0;
+        instructions->HW_FMA4  = (cpu_id[2] & ((int) 1 << 16)) != 0;
+        instructions->HW_XOP   = (cpu_id[2] & ((int) 1 << 11)) != 0;
     }
 }
 
