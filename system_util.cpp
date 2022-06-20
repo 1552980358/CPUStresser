@@ -56,7 +56,7 @@ void show_processor_name() {
          << endl;
 }
 
-void check_instructions_supported(struct cpu_instructions *instructions) {
+void check_instructions_supported(cpu_instructions_t *instructions) {
     int cpu_id[4];
 
     cpuid(cpu_id, 0);
@@ -113,7 +113,7 @@ void check_instructions_supported(struct cpu_instructions *instructions) {
     }
 }
 
-void show_supported_instructions(struct cpu_instructions *instructions) {
+void show_supported_instructions(cpu_instructions_t *instructions) {
     struct cpu_instructions instr = *instructions;
 
     if (instr.HW_MMX || instr.HW_x64 || instr.HW_ABM || instr.HW_RDRAND || instr.HW_BMI1

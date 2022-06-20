@@ -158,6 +158,6 @@ void command_check(vector<string> *, environment *) {
 
     // Instruction sets
     struct cpu_instructions instructions{};
-    check_instructions_supported((struct cpu_instructions *) &instructions);
-    show_supported_instructions((struct cpu_instructions *) &instructions);
+    check_instructions_supported((cpu_instructions_t *) &instructions);
+    show_supported_instructions((cpu_instructions_t *) &instructions);
 }

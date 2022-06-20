@@ -47,6 +47,8 @@ struct cpu_instructions {
 
 };
 
+typedef struct cpu_instructions cpu_instructions_t;
+
 void check_instructions_supported(struct cpu_instructions *);
 void show_supported_instructions(struct cpu_instructions *);
 
