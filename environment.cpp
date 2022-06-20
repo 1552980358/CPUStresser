@@ -117,6 +117,24 @@ void environment::remove_all() {
 
 void environment::set_mode(const int &mode) {
     _stress_mode = mode;
+    cout << "Switch to mode " << mode << ": ";
+    switch (mode) {
+        case STRESS_MODE_FPU:
+            cout << "FPU stress";
+            break;
+        case STRESS_MODE_AVX1:
+            cout << "AVX1 + FPU mix mode stress";
+            break;
+        case STRESS_MODE_AVX2:
+            cout << "AVX2 + AVX1 + FPU mix mode stress";
+            break;
+        case STRESS_MODE_AVX512F:
+            cout << "AVX512F + AVX2 + AVX1 + FPU mix mode stress";
+            break;
+        default:
+            break;
+    }
+    cout << endl;
 }
 
 int environment::get_mode() const {
