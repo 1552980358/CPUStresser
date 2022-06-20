@@ -144,8 +144,16 @@ void command_mode(vector<string> *string_vector, environment *env_ptr) {
         case STRESS_MODE_FPU:
         case STRESS_MODE_AVX1:
         case STRESS_MODE_AVX2:
-        case STRESS_MODE_AVX512F:
             env_ptr->set_mode(mode_number);
+            break;
+        case STRESS_MODE_AVX512F:
+            cpu_instructions_t instructions;
+            check_instructions_supported((struct cpu_instructions *) &instructions);
+            if (instructions.HW_AVX512F) {
+                env_ptr->set_mode(mode_number);
+            } else {
+                cout << "AVX512F instruction set is not supported by your processor." << endl;
+            }
             break;
         default:
             mode_help();
