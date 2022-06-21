@@ -48,6 +48,8 @@ void environment::start() {
             while (!current_thread_ptr->is_started());
             cout << "\b\b\b\b\b\b\b\b\bDone     " << endl;
         }
+
+        cout << _thread_size << " thread(s) launched." << endl;
         _threads_last = current_thread_ptr;
     }
 }
