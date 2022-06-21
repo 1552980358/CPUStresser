@@ -19,7 +19,7 @@ using std::to_string;
 
 #define INITIAL_THREAD_SIZE 0
 #define START_THREAD_STATE_FILL '.'
-#define START_THREAD_STATE_W 5
+#define START_THREAD_STATE_W 30
 
 environment::environment() {
     _is_start = false;
