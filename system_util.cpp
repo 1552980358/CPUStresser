@@ -36,21 +36,12 @@ void show_processor_name() {
     // Get the information associated with each extended ID.
     cpuid(cpu_id, 0x80000000);
     unsigned nExIds = cpu_id[0];
-    for (unsigned i = 0x80000000; i <= nExIds; ++i) {
-        cpuid(cpu_id, i);
-        // Interpret CPU brand string
-        switch (i) { // NOLINT(hicpp-multiway-paths-covered)
-            case 0x80000002:
-                memcpy(cpu_name, cpu_id, sizeof(int) * 4);
-                break;
-            case 0x80000003:
-                memcpy(cpu_name + 16, cpu_id, sizeof(int) * 4);
-                break;
-            case 0x80000004:
-                memcpy(cpu_name + 32, cpu_id, sizeof(int) * 4);
-                break;
-        }
-    }
+    cpuid(cpu_id, 0x80000002);
+    memcpy(cpu_name, cpu_id, sizeof(int) * 4);
+    cpuid(cpu_id, 0x80000003);
+    memcpy(cpu_name + 16, cpu_id, sizeof(int) * 4);
+    cpuid(cpu_id, 0x80000004);
+    memcpy(cpu_name + 32, cpu_id, sizeof(int) * 4);
     cout << "Processor: " << endl
          << cpu_name << endl
          << endl;
