@@ -36,7 +36,7 @@ void environment::start() {
         }
         _is_start = true;
 
-        cout << "Now starting " << _thread_size << " thread(s)..." << endl;
+        cout << "Now launching " << _thread_size << " thread(s)..." << endl;
         thread_t *current_thread_ptr = nullptr;
         for (int i = 0; i < _thread_size; ++i) {
             cout << left << setfill(START_THREAD_STATE_FILL) << setw(START_THREAD_STATE_W) << "Launching thread #" + to_string(i);
