@@ -1,6 +1,6 @@
 #include "command_help.h"
 
-void command_help() {
+void command_help(vector<string> *, environment *) {
     cout << "Commands: { help | start | stop | exit | # | set | + | add | - | rm }" << endl
          << endl
          << "Command <help>: Show help message" << endl

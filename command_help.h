@@ -1,11 +1,19 @@
 #ifndef CPUSTRESSER_COMMAND_HELP_H
 #define CPUSTRESSER_COMMAND_HELP_H
 
+#include "environment.h"
+
 #include <iostream>
 using std::cout;
 using std::endl;
 
-void command_help();
+#include <string>
+using std::string;
+
+#include <vector>
+using std::vector;
+
+void command_help(vector<string> *, environment *);
 void set_help();
 void add_help();
 void remove_help();
