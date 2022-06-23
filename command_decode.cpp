@@ -65,8 +65,6 @@ vector<string> *split_str(const string &str, const char &delim) {
     return result;
 }
 
-#define COMMAND_HELP "help"
-
 void command_start(vector<string> *, environment *);
 void command_stop(vector<string> *, environment *);
 void command_set(vector<string> *, environment *);
@@ -78,9 +76,7 @@ void command_check(vector<string> *, environment *);
 vector<string> *analysis_string_vector(vector<string> *string_vector, environment *env_ptr) {
     string command;
     void (*command_method)(vector<string> *, environment *);
-    if (string_vector->empty() || (command = string_vector->at(0)) == COMMAND_HELP) {
-        command_method = command_help;
-    } else if (command == COMMAND_START) {
+    if (command == COMMAND_START) {
         command_method = command_start;
     } else if (command == COMMAND_STOP) {
         command_method = command_stop;
