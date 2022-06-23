@@ -67,8 +67,8 @@ vector<string> *split_str(const string &str, const char &delim) {
 
 #define COMMAND_HELP "help"
 
-void command_start(environment *);
-void command_stop(environment *);
+void command_start(vector<string> *, environment *);
+void command_stop(vector<string> *, environment *);
 void command_set(vector<string> *, environment *);
 void command_add(vector<string> *, environment *);
 void command_remove(vector<string> *, environment *);
@@ -77,31 +77,35 @@ void command_check(vector<string> *, environment *);
 
 vector<string> *analysis_string_vector(vector<string> *string_vector, environment *env_ptr) {
     string command;
+    void (*command_method)(vector<string> *, environment *);
     if (string_vector->empty() || (command = string_vector->at(0)) == COMMAND_HELP) {
-        command_help();
+        command_method = command_help;
     } else if (command == COMMAND_START) {
-        command_start(env_ptr);
+        command_method = command_start;
     } else if (command == COMMAND_STOP) {
-        command_stop(env_ptr);
+        command_method = command_stop;
     } else if (command == COMMAND_SET_SIGN || command == COMMAND_SET_STR) {
-        command_set(string_vector, env_ptr);
+        command_method = command_set;
     } else if (command == COMMAND_ADD_SIGN || command == COMMAND_ADD_STR) {
-        command_add(string_vector, env_ptr);
+        command_method = command_add;
     } else if (command == COMMAND_REMOVE_SIGN || command == COMMAND_REMOVE_STR) {
-        command_remove(string_vector, env_ptr);
+        command_method = command_remove;
     } else if (command == COMMAND_MODE_STR || command == COMMAND_MODE_SIGN) {
-        command_mode(string_vector, env_ptr);
+        command_method = command_mode;
     } else if (command == COMMAND_CHECK) {
-        command_check(string_vector, env_ptr);
+        command_method = command_check;
+    } else {
+        command_method = command_help;
     }
+    command_method(string_vector, env_ptr);
     return string_vector;
 }
 
-void command_start(environment *env_ptr) {
+void command_start(vector<string> *, environment *env_ptr) {
     env_ptr->start();
 }
 
-void command_stop(environment *env_ptr) {
+void command_stop(vector<string> *, environment *env_ptr) {
     env_ptr->remove_all();
 }
 
