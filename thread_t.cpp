@@ -38,6 +38,13 @@ void thread_runnable(thread_t *thread_ptr, const int &stress_mode, const int &id
     while (thread_ptr->is_run()) {
         stress_function((int64_t *) &thread_ptr->num, (double *) &thread_ptr->pi, buffer_input, buffer_result);
     }
+
+    if (buffer_input) {
+        free(buffer_input);
+    }
+    if (buffer_result) {
+        free(buffer_result);
+    }
 }
 
 thread_t::thread_t(thread_t *prev, const int &stress_mode, const int &id) {
