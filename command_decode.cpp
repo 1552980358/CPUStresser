@@ -140,6 +140,10 @@ void command_mode(vector<string> *string_vector, environment *env_ptr) {
         return show_mode(env_ptr->get_mode());
     }
     int mode_number;
+
+    cpu_instructions_t instructions;
+    check_instructions_supported((cpu_instructions_t *) &instructions);
+
     switch (mode_number = str_to_int(string_vector->at(1))) {
         case STRESS_MODE_FPU:
         case STRESS_MODE_AVX1:
@@ -152,7 +156,22 @@ void command_mode(vector<string> *string_vector, environment *env_ptr) {
             if (instructions.HW_AVX512F) {
                 env_ptr->set_mode(mode_number);
             } else {
-                cout << "AVX512F instruction set is not supported by your processor." << endl;
+                cout << "AVX512F instruction set is not supported by your processor." << endl
+                     << "Force enabling may cause crash when operating." << endl
+                     << "Force enable <Y/N>? [default: N] ";
+                switch (getchar()) {
+                    case 'Y':
+                    case 'y':
+                        cout << "AVX512F + AVX2 + AVX1 + FPU mix mode enabled." << endl;
+                        break;
+                    case 'N':
+                    case 'n':
+                        cout << "AVX512F + AVX2 + AVX1 + FPU mix mode disabled." << endl;
+                        break;
+                    default:
+                        cout << "Unknown key. Disable AVX512F + AVX2 + AVX1 + FPU mix mode by default." << endl;
+                        break;
+                }
             }
             break;
         default:
