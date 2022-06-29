@@ -26,7 +26,7 @@ environment::environment() {
     _thread_size = INITIAL_THREAD_SIZE;
     _threads_first = nullptr;
     _threads_last = nullptr;
-    _stress_mode = STRESS_MODE_AVX2;
+    _stress_mode = STRESS_MODE_AVX2_MIX;
 }
 
 void environment::start() {
@@ -124,13 +124,13 @@ void environment::set_mode(const int &mode) {
         case STRESS_MODE_FPU:
             cout << "FPU stress";
             break;
-        case STRESS_MODE_AVX1:
+        case STRESS_MODE_AVX1_MIX:
             cout << "AVX1 + FPU mix mode stress";
             break;
-        case STRESS_MODE_AVX2:
+        case STRESS_MODE_AVX2_MIX:
             cout << "AVX2 + AVX1 + FPU mix mode stress";
             break;
-        case STRESS_MODE_AVX512F:
+        case STRESS_MODE_AVX512F_MIX:
             cout << "AVX512F + AVX2 + AVX1 + FPU mix mode stress";
             break;
         default:
