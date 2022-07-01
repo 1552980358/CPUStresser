@@ -11,44 +11,64 @@ using std::endl;
 void thread_runnable(thread_t *thread_ptr, const int &stress_mode, const int &id) {
     thread_ptr->started();
     void (*stress_function)(int64_t *, double *, double *, double *);
-    double *buffer_input = nullptr;
-    double *buffer_result = nullptr;
+    
+    auto double_size = sizeof(double);
+
+    int buffer_input_size = 0;
+    int buffer_result_size = 0;
 
     switch (stress_mode) {
         case STRESS_MODE_FPU:
             stress_function = stress_mode_fpu;
             break;
         case STRESS_MODE_AVX1_MIX:
-            buffer_input = (double *) malloc(sizeof(double) * AVX128_BUFFER_INPUT_SIZE);
-            buffer_result = (double *) malloc(sizeof(double) * AVX128_BUFFER_RESULT_SIZE);
+            // buffer_input = (double *) malloc(sizeof(double) * AVX128_BUFFER_INPUT_SIZE);
+            // buffer_result = (double *) malloc(sizeof(double) * AVX128_BUFFER_RESULT_SIZE);
+            buffer_input_size = double_size * AVX128_BUFFER_INPUT_SIZE;
+            buffer_result_size = double_size * AVX128_BUFFER_RESULT_SIZE;
             stress_function = stress_mode_avx1_mix;
             break;
         case STRESS_MODE_AVX2_MIX:
-            buffer_input = (double *) malloc(sizeof(double) * AVX256_BUFFER_INPUT_SIZE);
-            buffer_result = (double *) malloc(sizeof(double) * AVX256_BUFFER_RESULT_SIZE);
+            // buffer_input = (double *) malloc(sizeof(double) * AVX256_BUFFER_INPUT_SIZE);
+            // buffer_result = (double *) malloc(sizeof(double) * AVX256_BUFFER_RESULT_SIZE);
+            buffer_input_size = double_size * AVX256_BUFFER_INPUT_SIZE;
+            buffer_result_size = double_size * AVX256_BUFFER_RESULT_SIZE;
             stress_function = stress_mode_avx2_mix;
             break;
         case STRESS_MODE_AVX512F_MIX:
-            buffer_input = (double *) malloc(sizeof(double) * AVX512_BUFFER_INPUT_SIZE);
-            buffer_result = (double *) malloc(sizeof(double) * AVX512_BUFFER_RESULT_SIZE);
+            // buffer_input = (double *) malloc(sizeof(double) * AVX512_BUFFER_INPUT_SIZE);
+            // buffer_result = (double *) malloc(sizeof(double) * AVX512_BUFFER_RESULT_SIZE);
+            buffer_input_size = double_size * AVX512_BUFFER_INPUT_SIZE;
+            buffer_result_size = double_size * AVX512_BUFFER_RESULT_SIZE;
             stress_function = stress_mode_avx512f_mix;
             break;
         case STRESS_MODE_AVX1_PURE:
-            buffer_input = (double *) malloc(sizeof(double) * AVX128_BUFFER_INPUT_SIZE * 2);
-            buffer_result = (double *) malloc(sizeof(double) * AVX128_BUFFER_RESULT_SIZE * 2);
+            // buffer_input = (double *) malloc(sizeof(double) * AVX128_BUFFER_INPUT_SIZE * 2);
+            // buffer_result = (double *) malloc(sizeof(double) * AVX128_BUFFER_RESULT_SIZE * 2);
+            buffer_input_size = double_size * AVX128_BUFFER_INPUT_SIZE * 2;
+            buffer_result_size = double_size * AVX128_BUFFER_RESULT_SIZE * 2;
             stress_function = stress_mode_avx1_pure;
             break;
         case STRESS_MODE_AVX2_PURE:
-            buffer_input = (double *) malloc(sizeof(double) * AVX256_BUFFER_INPUT_SIZE * 2);
-            buffer_result = (double *) malloc(sizeof(double) * AVX256_BUFFER_RESULT_SIZE * 2);
+            // buffer_input = (double *) malloc(sizeof(double) * AVX256_BUFFER_INPUT_SIZE * 2);
+            // buffer_result = (double *) malloc(sizeof(double) * AVX256_BUFFER_RESULT_SIZE * 2);
+            buffer_input_size = double_size * AVX256_BUFFER_INPUT_SIZE * 2;
+            buffer_result_size = double_size * AVX256_BUFFER_RESULT_SIZE * 2;
             stress_function = stress_mode_avx2_pure;
             break;
         case STRESS_MODE_AVX512F_PURE:
-            buffer_input = (double *) malloc(sizeof(double) * AVX512_BUFFER_INPUT_SIZE * 2);
-            buffer_result = (double *) malloc(sizeof(double) * AVX512_BUFFER_RESULT_SIZE * 2);
+            // buffer_input = (double *) malloc(sizeof(double) * AVX512_BUFFER_INPUT_SIZE * 2);
+            // buffer_result = (double *) malloc(sizeof(double) * AVX512_BUFFER_RESULT_SIZE * 2);
+            buffer_input_size = double_size * AVX512_BUFFER_INPUT_SIZE * 2;
+            buffer_result_size = double_size * AVX512_BUFFER_RESULT_SIZE * 2;
             stress_function = stress_mode_avx512f_pure;
             break;
+        default:
+            break;
     }
+
+    auto buffer_input = buffer_input_size ? (double *) malloc(buffer_input_size) : nullptr;
+    auto buffer_result = buffer_result_size ? (double *) malloc(buffer_result_size) : nullptr;
 
     while (thread_ptr->is_run()) {
         stress_function((int64_t *) &thread_ptr->num, (double *) &thread_ptr->pi, buffer_input, buffer_result);
