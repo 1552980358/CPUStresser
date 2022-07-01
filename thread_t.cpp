@@ -12,7 +12,7 @@ void thread_runnable(thread_t *thread_ptr, const int &stress_mode, const int &id
     thread_ptr->started();
     void (*stress_function)(int64_t *, double *, double *, double *);
     
-    auto double_size = sizeof(double);
+    int double_size = sizeof(double);
 
     int buffer_input_size = 0;
     int buffer_result_size = 0;
