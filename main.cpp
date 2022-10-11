@@ -7,7 +7,7 @@ bool resolve_arguments(const int &, const char **);
 
 int main(int argc, char **argv) {
 
-    if (!argc) {    // argc == 0
+    if (argc > 1) {    // has argument(s)
         if (!resolve_arguments(argc, (const char **) argv)) {
             return EXIT_CODE_UNKNOWN_ARGUMENT;
         }
