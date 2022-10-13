@@ -10,6 +10,7 @@ include(CMakeRC.cmake)
 cmrc_add_resource_library(
         winring0 NAMESPACE winring0
         lib/WinRing0x64.dll lib/WinRing0.dll
+        lib/WinRing0x64.sys lib/WinRing0.sys
 )
 
 add_executable(

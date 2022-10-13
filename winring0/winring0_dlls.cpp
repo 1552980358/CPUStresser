@@ -14,6 +14,11 @@ using cmrc::winring0::get_filesystem;
 #define CMRC_RES_WIN_RING0 "lib/WinRing0.dll"
 #define CMRC_RES_WIN_RING0_X64 "lib/WinRing0x64.dll"
 
+#define WIN_RING0_SYS "WinRing0.sys"
+#define WIN_RING0_X64_SYS "WinRing0x64.sys"
+#define CMRC_RES_WIN_RING0_SYS "lib/WinRing0.sys"
+#define CMRC_RES_WIN_RING0_X64_SYS "lib/WinRing0x64.sys"
+
 #define DLL_FILE_OPEN_MODE "wb+"
 void write_dll_to_file(FILE *, char *, const char *);
 
@@ -28,6 +33,16 @@ void copy_win_ring0_dlls() {
             );
         }
     }
+    if (!exists(WIN_RING0_SYS)) {
+        auto win_ring0 = get_filesystem().open(CMRC_RES_WIN_RING0_SYS);
+        if (win_ring0.size()) {
+            write_dll_to_file(
+                    fopen(WIN_RING0_SYS, DLL_FILE_OPEN_MODE),
+                    (char *) win_ring0.begin(),
+                    win_ring0.end()
+            );
+        }
+    }
     if (!exists(WIN_RING0_X64)) {
         auto win_ring0_x64 = get_filesystem().open(CMRC_RES_WIN_RING0_X64);
         if (win_ring0_x64.size()) {
@@ -35,6 +50,16 @@ void copy_win_ring0_dlls() {
                     fopen(WIN_RING0_X64, DLL_FILE_OPEN_MODE),
                     (char *) win_ring0_x64.begin(),
                     win_ring0_x64.end()
+            );
+        }
+    }
+    if (!exists(WIN_RING0_X64_SYS)) {
+        auto win_ring0 = get_filesystem().open(CMRC_RES_WIN_RING0_X64_SYS);
+        if (win_ring0.size()) {
+            write_dll_to_file(
+                    fopen(WIN_RING0_X64_SYS, DLL_FILE_OPEN_MODE),
+                    (char *) win_ring0.begin(),
+                    win_ring0.end()
             );
         }
     }
