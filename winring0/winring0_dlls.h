@@ -1,0 +1,6 @@
+#ifndef CPUSTRESS_WINRING0_DLLS_H
+#define CPUSTRESS_WINRING0_DLLS_H
+
+void copy_win_ring0_dlls();
+
+#endif //CPUSTRESS_WINRING0_DLLS_H
