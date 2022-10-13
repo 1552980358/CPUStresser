@@ -94,7 +94,7 @@ WINAPI is_msr();
 // IsTsc
 //-----------------------------------------------------------------------------
 BOOL // TRUE: support TSC(Time Stamp Counter), FALSE: not support TSC
-WINAPI is_stc();
+WINAPI is_tsc();
 
 //-----------------------------------------------------------------------------
 // Rdmsr
