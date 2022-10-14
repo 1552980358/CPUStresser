@@ -19,10 +19,10 @@ cmrc_add_resource_library(
 add_executable(
         CPUStress
         main.cpp
-        argument_parameters.cpp argument_parameters.h
+        argument/argument_parameters.cpp argument/argument_parameters.h
         exit_code.h
         winring0/winring0.cpp winring0/winring0.h
         winring0/winring0_dlls.cpp winring0/winring0_dlls.h
-)
+        argument/argument_init.cpp argument/argument_init.h)
 
 target_link_libraries(CPUStress PRIVATE environment winring0)

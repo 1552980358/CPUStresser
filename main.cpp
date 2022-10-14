@@ -1,19 +1,26 @@
 #include <iostream>
 using std::cout;
 using std::endl;
+#include <filesystem>
+namespace filesystem = std::filesystem;
+using filesystem::exists;
+using filesystem::path;
 
-#include "argument_parameters.h"
+#include "argument/argument_parameters.h"
+#include "argument/argument_init.h"
 #include "exit_code.h"
 
 #include "environment/environment.h"
 
-bool resolve_arguments(const int &, const char **);
+bool resolve_arguments(const string &executable_dir, const int &, const char **);
 void show_environment(const environment_t &);
 
 int main(int argc, char **argv) {
 
     if (argc > 1) {    // has argument(s)
-        if (!resolve_arguments(argc, (const char **) argv)) {
+        auto executable_path = string(*argv);
+        auto executable_dir = executable_path.substr(0, executable_path.find_last_of(path::preferred_separator));
+        if (!resolve_arguments(executable_dir, argc, (const char **) argv)) {
             return EXIT_CODE_UNKNOWN_ARGUMENT;
         }
     }
@@ -24,11 +31,12 @@ int main(int argc, char **argv) {
     return EXIT_CODE_CORRECT;
 }
 
-bool resolve_arguments(const int &argc, const char **argv) {
+bool resolve_arguments(const string &executable_dir, const int &argc, const char **argv) {
     auto count = 1;
-    while (++count < argc) {
-        switch (resolve_argument(argv[count])) {
-            case ARGUMENT_CONFIG:
+    while (count < argc) {
+        switch (resolve_argument(argv[count++])) {
+            case ARGUMENT_INIT:
+                argument_init(executable_dir);
                 break;
             case ARGUMENT_UNKNOWN:
                 return false;
