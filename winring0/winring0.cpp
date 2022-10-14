@@ -109,6 +109,8 @@ BOOL WINAPI rdmsr(DWORD index, PDWORD eax, PDWORD edx) {
 
 #define RDMSR_TX "RdmsrTx"
 typedef BOOL WINAPI (*RdmsrTx)(DWORD, PDWORD, PDWORD, DWORD_PTR);
-BOOL WINAPI rdmsr_tx(DWORD index, PDWORD eax, PDWORD edx, DWORD_PTR threadAffinityMask) {
-    return ((RdmsrTx) GetProcAddress(win_ring0_dll, RDMSR))(index, eax, edx, threadAffinityMask);
+BOOL WINAPI rdmsr_tx(DWORD index, PDWORD eax, PDWORD edx, DWORD_PTR thread_affinity_mask) {
+    return ((RdmsrTx) GetProcAddress(win_ring0_dll, RDMSR_TX))(
+            index, eax, edx, thread_affinity_mask
+            );
 }
