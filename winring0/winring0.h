@@ -142,7 +142,7 @@ WINAPI wrmsr(
 // WrmsrTx
 //-----------------------------------------------------------------------------
 BOOL // TRUE: success, FALSE: failure
-WINAPI wrmsrTx(
+WINAPI wrmsr_tx(
         DWORD index,					// MSR index
         DWORD eax,						// bit  0-31
         DWORD edx,						// bit 32-63
@@ -171,7 +171,7 @@ WINAPI rdpmc(
 );
 
 //-----------------------------------------------------------------------------
-// RdmsrTx
+// RdpmcTx
 //-----------------------------------------------------------------------------
 BOOL // TRUE: success, FALSE: failure
 WINAPI rdpmc_tx(
@@ -182,7 +182,7 @@ WINAPI rdpmc_tx(
 );
 
 //-----------------------------------------------------------------------------
-// RdmsrPx
+// RdpmcPx
 //-----------------------------------------------------------------------------
 BOOL // TRUE: success, FALSE: failure
 WINAPI rdpmc_px(
@@ -236,7 +236,7 @@ WINAPI cpuid_px(
 BOOL // TRUE: success, FALSE: failure
 WINAPI rdtsc(
         PDWORD eax,						// bit  0-31
-    PDWORD edx						// bit 32-63
+        PDWORD edx						// bit 32-63
 );
 
 //-----------------------------------------------------------------------------
