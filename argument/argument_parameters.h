@@ -6,7 +6,7 @@ using std::string;
 
 typedef enum argument_parameters {
 
-    ARGUMENT_CONFIG,
+    ARGUMENT_INIT,
 
     ARGUMENT_UNKNOWN,
 
