@@ -31,9 +31,9 @@ void load_win_ring0() {
     }
 }
 
-template<typename MethodPointer>
-MethodPointer get_method(LPCSTR lpProcName) {
-    return (MethodPointer) GetProcAddress(win_ring0_dll, lpProcName);
+template<typename method_ptr>
+method_ptr get_method(LPCSTR lpProcName) {
+    return (method_ptr) GetProcAddress(win_ring0_dll, lpProcName);
 }
 
 #define GET_DLL_STATUS "GetDllStatus"
@@ -182,4 +182,116 @@ BOOL WINAPI cpuid_px(
         DWORD_PTR process_affinity_mask
         ) {
     return get_method<CpuidPx>(CPUID_PX)(index, eax, ebx, ecx, edx, process_affinity_mask);
+}
+
+#define RDTSC "Rdtsc"
+typedef BOOL WINAPI (*Rdtsc)(PDWORD, PDWORD);
+BOOL WINAPI rdtsc(PDWORD eax, PDWORD edx) {
+    return get_method<Rdtsc>(RDTSC)(eax, edx);
+}
+
+typedef BOOL WINAPI (*RDTSC_TX_PX)(PDWORD, PDWORD, DWORD_PTR);
+
+#define RDTSC_TX "RdtscTx"
+typedef RDTSC_TX_PX RdtscTx;
+BOOL WINAPI rdtsc_tx(PDWORD eax, PDWORD edx, DWORD_PTR thread_affinity_mask) {
+    return get_method<RdtscTx>(RDTSC_TX)(eax, edx, thread_affinity_mask);
+}
+
+#define RDTSC_PX "RdtscPx"
+typedef RDTSC_TX_PX RdtscPx;
+BOOL WINAPI rdtsc_px(PDWORD eax, PDWORD edx, DWORD_PTR process_affinity_mask) {
+    return get_method<RdtscPx>(RDTSC_PX)(eax, edx, process_affinity_mask);
+}
+
+#define HLT "Hlt"
+typedef BOOL_METHOD Hlt;
+BOOL WINAPI hlt() {
+    return get_method<Hlt>(HLT)();
+}
+
+typedef BOOL WINAPI (*HLT_TX_PX)(DWORD_PTR);
+
+#define HLT_TX "HltTx"
+typedef HLT_TX_PX HltTx;
+BOOL WINAPI hlt_tx(DWORD_PTR thread_affinity_mask) {
+    return get_method<HltTx>(HLT_TX)(thread_affinity_mask);
+}
+
+#define HLT_PX "HltPx"
+typedef HLT_TX_PX HltPx;
+BOOL WINAPI hlt_px(DWORD_PTR process_affinity_mask) {
+    return get_method<HltPx>(HLT_PX)(process_affinity_mask);
+}
+
+#define READ_IO_PORT_BYTE "ReadIoPortByte"
+typedef BYTE WINAPI (*ReadIoPortByte)(WORD);
+BYTE WINAPI read_io_port_byte(WORD port) {
+    return get_method<ReadIoPortByte>(READ_IO_PORT_BYTE)(port);
+}
+
+#define READ_IO_PORT_WORD "ReadIoPortWord"
+typedef WORD WINAPI (*ReadIoPortWord)(WORD);
+WORD WINAPI read_io_oort_word(WORD port) {
+    return get_method<ReadIoPortWord>(READ_IO_PORT_WORD)(port);
+}
+
+#define READ_IO_PORT_DWORD "ReadIoPortDword"
+typedef DWORD WINAPI (*ReadIoPortDword)(WORD);
+DWORD WINAPI read_io_oort_dword(WORD port) {
+    return get_method<ReadIoPortDword>(READ_IO_PORT_DWORD)(port);
+}
+
+#define READ_IO_PORT_BYTE_EX "ReadIoPortByteEx"
+typedef BOOL WINAPI (*ReadIoPortByteEx)(WORD, PBYTE);
+BOOL WINAPI read_io_port_byte_ex(WORD port, PBYTE value) {
+    return get_method<ReadIoPortByteEx>(READ_IO_PORT_BYTE_EX)(port, value);
+}
+
+#define READ_IO_PORT_EX "ReadIoPortWordEx"
+typedef BOOL WINAPI (*ReadIoPortWordEx)(WORD, PWORD);
+BOOL WINAPI read_io_port_word_ex(WORD port, PWORD value) {
+    return get_method<ReadIoPortWordEx>(READ_IO_PORT_EX)(port, value);
+}
+
+#define READ_IO_PORT_DWORD_EX "ReadIoPortDwordEx"
+typedef BOOL WINAPI(*ReadIoPortDwordEx)(WORD, PDWORD);
+BOOL WINAPI read_io_port_dword_ex(WORD port, PDWORD value) {
+    return get_method<ReadIoPortDwordEx>(READ_IO_PORT_DWORD_EX)(port, value);
+}
+
+#define WRITE_IO_PORT_BYTE "WriteIoPortByte"
+typedef VOID WINAPI(*WriteIoPortByte)(WORD, BYTE);
+VOID WINAPI write_io_port_byte(WORD port, BYTE value) {
+    return get_method<WriteIoPortByte>(WRITE_IO_PORT_BYTE)(port, value);
+}
+
+#define WRITE_IO_PORT_DWORD "WriteIoPortDword"
+typedef VOID WINAPI(*WriteIoPortDword)(WORD, BYTE);
+VOID WINAPI write_io_port_dword(WORD port,DWORD value) {
+    return get_method<WriteIoPortDword>(WRITE_IO_PORT_DWORD)(port, value);
+}
+
+#define WRITE_IO_PORT_WORD "WriteIoPortWord"
+typedef VOID WINAPI(*WriteIoPortWord)(WORD, BYTE);
+VOID WINAPI write_io_port_word(WORD port, WORD value) {
+    return get_method<WriteIoPortWord>(WRITE_IO_PORT_WORD)(port, value);
+}
+
+#define WRITE_IO_PORT_BYTE_EX "WriteIoPortByteEx"
+typedef BOOL WINAPI(*WriteIoPortByteEx)(WORD, BYTE);
+BOOL WINAPI write_io_port_byte_ex(WORD port, BYTE value) {
+    return get_method<WriteIoPortByteEx>(WRITE_IO_PORT_BYTE_EX)(port, value);
+}
+
+#define WRITE_IO_PORT_WORD_EX "WriteIoPortWordEx"
+typedef BOOL WINAPI(*WriteIoPortWordEx)(WORD, BYTE);
+BOOL WINAPI write_io_port_word_ex(WORD port, WORD value) {
+    return get_method<WriteIoPortWordEx>(WRITE_IO_PORT_WORD_EX)(port, value);
+}
+
+#define WRITE_IO_PORT_DWORD_EX "WriteIoPortDwordEx"
+typedef BOOL WINAPI(*WriteIoPortDwordEx)(WORD, BYTE);
+BOOL WINAPI write_io_port_dword_ex(WORD port, DWORD value) {
+    return get_method<WriteIoPortDwordEx>(WRITE_IO_PORT_DWORD_EX)(port, value);
 }
