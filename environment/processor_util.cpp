@@ -1,9 +1,9 @@
 #include <thread>
 using std::thread;
-#include <cpuid.h>
 
 #include "processor_util.h"
 #include "processor_cache.h"
+#include "cpuid_util.h"
 
 int processor_get_threads() {
     int threads;
@@ -13,12 +13,6 @@ int processor_get_threads() {
     return threads;
 }
 
-#ifdef _WIN32
-#define cpuid(cpu_id, leaf) __cpuidex(cpu_id, leaf, 0)
-#else
-#define cpuid(cpu_id, level) __cpuid_count(level, 0, cpu_id[0], cpu_id[1], cpu_id[2], cpu_id[3])
-#endif
-
 /**
  * Src: https://stackoverflow.com/a/21642909/11685230
  **/
@@ -27,12 +21,12 @@ int processor_get_threads() {
 #define CPU_VENDOR_PTR new char[CPU_VENDOR_LENGTH]()
 
 char *processor_get_vendor() {
-    int cpu_id[4];
     auto vendor = CPU_VENDOR_PTR;
-    cpuid(cpu_id, VENDOR_EXTENDED);
-    memcpy(vendor, &cpu_id[1], 4);   // copy EBX
-    memcpy(vendor + 4, &cpu_id[3], 4); // copy EDX
-    memcpy(vendor + 8, &cpu_id[2], 4); // copy ECX
+    int ebx, ecx, edx;
+    asm_cpuid(VENDOR_EXTENDED, nullptr, &ebx, &ecx, &edx);
+    memcpy(vendor, &ebx, 4);   // copy EBX
+    memcpy(vendor + 4, &edx, 4); // copy EDX
+    memcpy(vendor + 8, &ecx, 4); // copy ECX
     vendor[12] = '\0';
     return vendor;
 }
@@ -53,13 +47,13 @@ char *processor_get_name() {
 
     // Get the information associated with each extended ID.
     int cpu_id[4];
-    cpuid(cpu_id, MODEL_EXTENDED);
+    asm_cpuid(MODEL_EXTENDED, cpu_id);
     if (cpu_id[0] >= MODEL_EXTENDED_BRAND_4) {
-        cpuid(cpu_id, MODEL_EXTENDED_BRAND_2);
+        asm_cpuid(MODEL_EXTENDED_BRAND_2, cpu_id);
         memcpy(processor_name, cpu_id, sizeof(int) * 4);
-        cpuid(cpu_id, MODEL_EXTENDED_BRAND_3);
+        asm_cpuid(MODEL_EXTENDED_BRAND_3, cpu_id);
         memcpy(processor_name + 16, cpu_id, sizeof(int) * 4);
-        cpuid(cpu_id, MODEL_EXTENDED_BRAND_4);
+        asm_cpuid(MODEL_EXTENDED_BRAND_4, cpu_id);
         memcpy(processor_name + 32, cpu_id, sizeof(int) * 4);
     }
 
@@ -72,8 +66,8 @@ char *processor_get_name() {
  **/
 #define PROCESSOR_CACHE_L1 0x80000005
 uint32_t processor_get_cache_l1() {
-    uint32_t eax, ebx, ecx, edx;
-    __cpuid(PROCESSOR_CACHE_L1, eax, ebx, ecx, edx);
+    int eax, ebx, ecx, edx;
+    asm_cpuid(PROCESSOR_CACHE_L1, &eax, &ebx, &ecx, &edx);
     return (ecx >> 24 & 0xFF) * (ecx >> 16 & 0xFF)      // L1DcSize: L1 data cache size in KB. L1 data cache size in KB
                 + (edx >> 24 & 0xFF) * (edx >> 16 & 0xFF);   // L1IcSize: L1 instruction cache size KB. L1 instruction cache size KB.
 }
@@ -110,8 +104,8 @@ void processor_get_cache_l2_l3(processor_cache_t *processor_cache) {
         associativity_map[0b1110] = 128;
     };
 
-    uint32_t eax, ebx, ecx, edx;
-    __cpuid(PROCESSOR_CACHE_L2_L3, eax, ebx, ecx, edx);
+    int eax, ebx, ecx, edx;
+    asm_cpuid(PROCESSOR_CACHE_L2_L3, &eax, &ebx, &ecx, &edx);
 
     /**
      * Refers to https://www.amd.com/system/files/TechDocs/25481.pdf
