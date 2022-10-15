@@ -23,4 +23,6 @@ public:
 
 } environment_t;
 
+void show_environment(const environment_t &);
+
 #endif //CPUSTRESS_ENVIRONMENT_H
