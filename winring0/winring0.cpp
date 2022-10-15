@@ -295,3 +295,95 @@ typedef BOOL WINAPI(*WriteIoPortDwordEx)(WORD, BYTE);
 BOOL WINAPI write_io_port_dword_ex(WORD port, DWORD value) {
     return get_method<WriteIoPortDwordEx>(WRITE_IO_PORT_DWORD_EX)(port, value);
 }
+
+#define SET_PCI_MAX_BUS_INDEX "SetPciMaxBusNo"
+typedef VOID WINAPI (*SetPciMaxBusNo)(BYTE);
+VOID WINAPI set_pci_max_bus_index(BYTE max) {
+    return get_method<SetPciMaxBusNo>(SET_PCI_MAX_BUS_INDEX)(max);
+}
+
+#define READ_PCI_CONFIG_BYTE "ReadPciConfigByte"
+typedef BYTE WINAPI(*ReadPciConfigByte)(DWORD, BYTE);
+BYTE WINAPI read_pci_config_byte(DWORD pci_address, BYTE reg_address) {
+    return get_method<ReadPciConfigByte>(READ_PCI_CONFIG_BYTE)(pci_address, reg_address);
+}
+
+#define READ_PCI_CONFIG_WORD "ReadPciConfigWord"
+typedef WORD WINAPI(*ReadPciConfigWord)(DWORD, BYTE);
+WORD WINAPI read_pci_config_word(DWORD pci_address, BYTE reg_address) {
+    return get_method<ReadPciConfigWord>(READ_PCI_CONFIG_WORD)(pci_address, reg_address);
+}
+
+#define READ_PCI_CONFIG_DWORD "ReadPciConfigDword"
+typedef DWORD WINAPI(*ReadPciConfigDword)(DWORD, BYTE);
+DWORD WINAPI read_pci_config_dword(DWORD pci_address, BYTE reg_address) {
+    return get_method<ReadPciConfigDword>(READ_PCI_CONFIG_DWORD)(pci_address, reg_address);
+}
+
+#define READ_PCI_CONFIG_BYTE_EX "ReadPciConfigByteEx"
+typedef BOOL WINAPI(*ReadPciConfigByteEx)(DWORD, DWORD, PBYTE);
+BOOL WINAPI read_pci_config_byte_ex(DWORD pci_address, DWORD reg_address, PBYTE value) {
+    return get_method<ReadPciConfigByteEx>(READ_PCI_CONFIG_BYTE_EX)(pci_address, reg_address, value);
+}
+
+#define READ_PCI_CONFIG_WORD_EX "ReadPciConfigWordEx"
+typedef BOOL WINAPI(*ReadPciConfigWordEx)(DWORD, DWORD, PWORD);
+BOOL WINAPI read_pci_config_word_ex(DWORD pci_address, DWORD reg_address, PWORD value) {
+    return get_method<ReadPciConfigWordEx>(READ_PCI_CONFIG_WORD_EX)(pci_address, reg_address, value);
+}
+
+#define READ_PCI_CONFIG_DWORD_EX "ReadPciConfigDwordEx"
+typedef BOOL WINAPI(*ReadPciConfigDwordEx)(DWORD, DWORD, PDWORD);
+BOOL WINAPI read_pci_config_dword_ex(DWORD pci_address, DWORD reg_address, PDWORD value) {
+    return get_method<ReadPciConfigDwordEx>(READ_PCI_CONFIG_DWORD_EX)(pci_address, reg_address, value);
+}
+
+#define WRITE_PCI_CONFIG_BYTE "WritePciConfigByte"
+typedef VOID WINAPI(*WritePciConfigByte)(DWORD, BYTE, BYTE);
+VOID WINAPI write_pci_config_byte(DWORD pci_address, BYTE reg_address, BYTE value) {
+    return get_method<WritePciConfigByte>(WRITE_PCI_CONFIG_BYTE)(pci_address, reg_address, value);
+}
+
+#define WRITE_PCI_CONFIG_WORD "WritePciConfigWord"
+typedef VOID WINAPI(*WritePciConfigWord)(DWORD, BYTE, DWORD);
+VOID WINAPI write_pci_config_word(DWORD pci_address, BYTE reg_address, WORD value) {
+    return get_method<WritePciConfigWord>(WRITE_PCI_CONFIG_WORD)(pci_address, reg_address, value);
+}
+
+#define WRITE_PCI_CONFIG_DWORD "WritePciConfigDword"
+typedef VOID WINAPI(*WritePciConfigDword)(DWORD, BYTE, DWORD);
+VOID WINAPI write_pci_config_dword(DWORD pci_address, BYTE reg_address, DWORD value) {
+    return get_method<WritePciConfigDword>(WRITE_PCI_CONFIG_DWORD)(pci_address, reg_address, value);
+}
+
+#define WRITE_PCI_CONFIG_BYTE_EX "WritePciConfigByteEx"
+typedef BOOL WINAPI(*WritePciConfigByteEx)(DWORD, DWORD, BYTE);
+BOOL WINAPI write_pci_config_byte_ex(DWORD pci_address, DWORD reg_address, BYTE value) {
+    return get_method<WritePciConfigByteEx>(WRITE_PCI_CONFIG_BYTE_EX)(pci_address, reg_address, value);
+}
+
+#define WRITE_PCI_CONFIG_WORD_EX "WritePciConfigWordEx"
+typedef BOOL WINAPI(*WritePciConfigWordEx)(DWORD, DWORD, WORD);
+BOOL WINAPI write_pci_config_word_ex(DWORD pci_address, DWORD reg_address, WORD value) {
+    return get_method<WritePciConfigWordEx>(WRITE_PCI_CONFIG_WORD_EX)(pci_address, reg_address, value);
+}
+
+#define WRITE_PCI_CONFIG_DWORD_EX "WritePciConfigDwordEx"
+typedef BOOL WINAPI(*WritePciConfigDwordEx)(DWORD, DWORD, DWORD);
+BOOL WINAPI write_pci_config_dword_ex(DWORD pci_address, DWORD reg_address, DWORD value) {
+    return get_method<WritePciConfigDwordEx>(WRITE_PCI_CONFIG_DWORD_EX)(pci_address, reg_address, value);
+}
+
+#define FIND_PCI_DEVICE_BY_ID "FindPciDeviceById"
+typedef DWORD WINAPI(*FindPciDeviceById)(WORD, WORD, BYTE);
+DWORD WINAPI find_pci_device_by_id(WORD vendor_id, WORD device_id, BYTE index) {
+    return get_method<FindPciDeviceById>(FIND_PCI_DEVICE_BY_ID)(vendor_id, device_id, index);
+}
+
+#define FIND_PCI_DEVICE_BY_CLASS "FindPciDeviceByClass"
+typedef DWORD WINAPI(*FindPciDeviceByClass)(BYTE, BYTE, BYTE, BYTE);
+DWORD WINAPI find_pci_device_by_class(BYTE base_class, BYTE sub_class, BYTE program_interface, BYTE index) {
+    return get_method<FindPciDeviceByClass>(FIND_PCI_DEVICE_BY_CLASS)(
+            base_class, sub_class, program_interface, index
+            );
+}
