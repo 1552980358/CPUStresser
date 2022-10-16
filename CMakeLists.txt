@@ -7,6 +7,7 @@ set(CMAKE_EXE_LINKER_FLAGS " -static")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 
 add_subdirectory(environment)
+add_subdirectory(argument)
 
 include(CMakeRC.cmake)
 
@@ -19,10 +20,9 @@ cmrc_add_resource_library(
 add_executable(
         CPUStress
         main.cpp
-        argument/argument_parameters.cpp argument/argument_parameters.h
         exit_code.h
         winring0/winring0.cpp winring0/winring0.h
         winring0/winring0_dlls.cpp winring0/winring0_dlls.h
-        argument/argument_init.cpp argument/argument_init.h)
+)
 
-target_link_libraries(CPUStress PRIVATE environment winring0)
+target_link_libraries(CPUStress PRIVATE argument environment winring0)
