@@ -1,16 +1,13 @@
 #include "winring0_dlls.h"
 
-#include <iostream>
 #include <filesystem>
 namespace filesystem = std::filesystem;
 using filesystem::exists;
 using filesystem::path;
-#include <sstream>
-using std::stringstream;
 
 #include "cmrc/cmrc.hpp"
-CMRC_DECLARE(winring0);
-using cmrc::winring0::get_filesystem;
+CMRC_DECLARE(winring0_lib);
+using cmrc::winring0_lib::get_filesystem;
 
 #include "winring0.h"
 
