@@ -6,18 +6,18 @@ using filesystem::exists;
 using filesystem::path;
 
 #include "cmrc/cmrc.hpp"
-CMRC_DECLARE(winring0_lib);
-using cmrc::winring0_lib::get_filesystem;
+CMRC_DECLARE(winring0dll);
+using cmrc::winring0dll::get_filesystem;
 
 #include "winring0.h"
 
-#define CMRC_RES_WIN_RING0 "lib/WinRing0.dll"
-#define CMRC_RES_WIN_RING0_X64 "lib/WinRing0x64.dll"
+#define CMRC_RES_WIN_RING0 "winring0/WinRing0.dll"
+#define CMRC_RES_WIN_RING0_X64 "winring0/WinRing0x64.dll"
 
 #define WIN_RING0_SYS "WinRing0.sys"
 #define WIN_RING0_X64_SYS "WinRing0x64.sys"
-#define CMRC_RES_WIN_RING0_SYS "lib/WinRing0.sys"
-#define CMRC_RES_WIN_RING0_X64_SYS "lib/WinRing0x64.sys"
+#define CMRC_RES_WIN_RING0_SYS "winring0/WinRing0.sys"
+#define CMRC_RES_WIN_RING0_X64_SYS "winring0/WinRing0x64.sys"
 
 #define DLL_FILE_OPEN_MODE "wb+"
 void write_dll_to_file(const char *, char *, const char *);
