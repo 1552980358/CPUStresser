@@ -16,11 +16,19 @@ list(APPEND libraries environment)
 # Extra content for Windows
 if (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 
+    # Token from https://github.com/KDAB/GammaRay/issues/458#issuecomment-337830420
+    if (${MSVC})
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /MANIFEST:NO")
+        set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} /MANIFEST:NO")
+        set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /MANIFEST:NO")
+    endif ()
+
     # WinRing0 accessing methods
     list(
             APPEND executable-src
             winring0/winring0.cpp winring0/winring0.h
             winring0/winring0_dlls.cpp winring0/winring0_dlls.h
+            CPUStress.manifest
     )
 
     # CMakeRC.cmake for including WinRing0 dll with sys
