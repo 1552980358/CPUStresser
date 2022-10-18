@@ -44,6 +44,6 @@ typedef struct instruction_set {
 
 } instruction_set_t;
 
-instruction_set_t *get_supported_instruction_set();
+void supported_instruction_set(instruction_set_t *);
 
 #endif //CPUSTRESS_INSTRUCTION_SET_H

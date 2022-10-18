@@ -7,8 +7,7 @@
 #define CPUID_METHOD_EXTENDED_ID 0x80000000
 #define CPUID_METHOD_EXTENDED_FEATURES_2 0x80000001
 
-instruction_set_t *get_supported_instruction_set() {
-    auto instruction_set = new instruction_set_t();
+void supported_instruction_set(instruction_set_t *instruction_set) {
 
     int eax, ebx, ecx, edx;
     asm_cpuid(CPUID_METHOD_ID, &eax, nullptr, nullptr, nullptr);
@@ -63,6 +62,4 @@ instruction_set_t *get_supported_instruction_set() {
         instruction_set->HW_FMA4  = (ecx & (1 << 16));
         instruction_set->HW_XOP   = (ecx & (1 << 11));
     }
-
-    return instruction_set;
 }
