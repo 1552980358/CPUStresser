@@ -2,7 +2,11 @@
 
 #if defined(_WIN32) || defined(_WIN64) || defined(__CYGWIN__) || defined(__MINGW32__)
 
+#ifdef _MSC_VER
+#include <ShlObj.h>
+#else
 #include <shlobj.h>
+#endif
 
 bool check_privilege_elevated() {
     return IsUserAnAdmin();
