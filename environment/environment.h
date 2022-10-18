@@ -5,6 +5,7 @@
 using std::string;
 
 #include "processor_cache.h"
+#include "instruction_set.h"
 
 typedef class environment {
 
@@ -13,6 +14,7 @@ private:
     char *_processor_name;
     int _processor_threads;
     processor_cache_t _processor_cache;
+    instruction_set_t _instruction_set{};
 
 public:
     environment();
@@ -20,6 +22,7 @@ public:
     [[nodiscard]] string get_processor_name() const;
     [[nodiscard]] int get_processor_threads() const;
     [[nodiscard]] processor_cache_t get_processor_cache() const;
+    [[nodiscard]] instruction_set_t get_instruction_set() const;
 
 } environment_t;
 
