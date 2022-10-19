@@ -10,10 +10,11 @@ include(MakeEnvironment.cmake)
 
 # Common method
 add_subdirectory(environment)
+add_subdirectory(stress)
 
 # Lists
 list(APPEND executable-src main.cpp exit_code.h)
-list(APPEND libraries environment)
+list(APPEND libraries environment stress)
 
 # Extra content for Windows
 if (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
