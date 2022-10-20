@@ -46,4 +46,10 @@ typedef struct instruction_set {
 
 void supported_instruction_set(instruction_set_t *);
 
+bool support_avx512(instruction_set_t *);
+
+bool support_avx256(instruction_set_t *);
+
+bool support_avx128(instruction_set_t *);
+
 #endif //CPUSTRESS_INSTRUCTION_SET_H
