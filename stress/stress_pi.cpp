@@ -52,7 +52,7 @@ bool stress_pi_avx128(long &count, long double &result, double *memory_ptr) {
 
     for (int i = 0; i < AVX128_INPUT_LOOP_COUNT; ++i) {
         *(memory_ptr + i) = 4 * (i % 2 ? -1 : 1);
-        *(memory_ptr + AVX128_INPUT_DIVIDEND_SIZE + i) = count + STRESS_PI_COUNT_DIFF;
+        *(memory_ptr + AVX128_INPUT_DIVIDEND_SIZE + i) = count += STRESS_PI_COUNT_DIFF;
     }
 
     if (!avx128_div(memory_ptr, memory_ptr + AVX128_INPUT_DIVIDEND_SIZE, memory_ptr + AVX128_INPUT_SIZE)
