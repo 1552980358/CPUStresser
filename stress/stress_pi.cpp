@@ -9,9 +9,11 @@
 #define STRESS_PI_COUNT_DIFF 2
 
 bool allocate_mem(double **, const int &);
+long get_signed_count(const long &);
 long count_check(long &);
 
 bool stress_pi_avx128(long &, long double &, double *);
+bool stress_pi_fpu(long &, long double &, double *);
 
 void reset_stress_pi_variables(long &count, long double &result) {
     count = STRESS_PI_DEFAULT_COUNT;
@@ -39,14 +41,13 @@ stress_pi_method_t get_stress_pi_method(instruction_set_t *instruction_set, bool
 
     }
 
-    return nullptr;
+    return stress_pi_fpu;
 }
 
 bool stress_pi_avx128(long &count, long double &result, double *memory_ptr) {
 
     if (count_check(count)) {
-        count = -1;
-        result = 0;
+        reset_stress_pi_variables(count, result);
     }
 
     for (int i = 0; i < AVX128_INPUT_LOOP_COUNT; ++i) {
@@ -78,9 +79,25 @@ bool stress_pi_avx128(long &count, long double &result, double *memory_ptr) {
     return true;
 }
 
+bool stress_pi_fpu(long &count, long double &result, double *) {
+    if (count == LONG_MAX) {
+        reset_stress_pi_variables(count, result);
+    }
+    count += STRESS_PI_COUNT_DIFF;
+    result += 4.0 / get_signed_count(count);
+    return true;
+}
+
 bool allocate_mem(double **memory_ptr, const int &size) {
     *memory_ptr = (double *) malloc(size);
     return *memory_ptr;
+}
+
+inline long get_signed_count(const long &count) {
+    if (((count + 1) / 2) % 2) {
+        return count;
+    }
+    return -count;
 }
 
 long count_check(long &count) {
