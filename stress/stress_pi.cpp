@@ -64,7 +64,7 @@ bool stress_pi_avx128(long &count, long double &result, double *memory_ptr) {
         return false;
     }
 
-    for (int i = 0; i < AVX128_OUTPUT_SIZE; ++i) {
+    for (int i = 0; i < AVX128_OUTPUT_FINAL; ++i) {
         result += *(memory_ptr + AVX128_INPUT_SIZE + i);
     }
 
