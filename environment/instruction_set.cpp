@@ -67,7 +67,7 @@ void supported_instruction_set(instruction_set_t *instruction_set) {
 bool support_avx512(instruction_set_t *instruction_set) {
     return instruction_set->HW_AVX512F || instruction_set->HW_AVX512CD || instruction_set->HW_AVX512PF
            || instruction_set->HW_AVX512ER || instruction_set->HW_AVX512VL || instruction_set->HW_AVX512BW
-           || instruction_set->HW_AVX512DQ || instruction_set->HW_AVX512IFMA || instruction_set->HW_AVX512VBMI
+           || instruction_set->HW_AVX512DQ || instruction_set->HW_AVX512IFMA || instruction_set->HW_AVX512VBMI;
 }
 
 bool support_avx256(instruction_set_t *instruction_set) {
