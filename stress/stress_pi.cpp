@@ -80,7 +80,7 @@ bool stress_pi_avx512(long &count, long double &result, double* memory) {
         *(memory + STRESS_AVX512_A_INPUT_DIVISOR_OFFSET + i) = count += STRESS_PI_COUNT_DIFF;
     }
     for (int i = 0; i < STRESS_PI_DIV_REPEAT; ++i) {
-        if (avx512_div(memory + STRESS_AVX512_A_INPUT_DIVIDEND_DIVIDE * i,
+        if (!avx512_div(memory + STRESS_AVX512_A_INPUT_DIVIDEND_DIVIDE * i,
                        memory + STRESS_AVX512_A_INPUT_DIVISOR_OFFSET + STRESS_AVX512_A_INPUT_DIVISOR_DIVIDE * i,
                        memory + STRESS_AVX512_A_OUTPUT_OFFSET + STRESS_AVX512_A_OUTPUT_DIVIDER * i
                        )) {
