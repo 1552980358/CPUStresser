@@ -84,7 +84,7 @@ bool stress_pi_avx512(long &count, long double &result, double* memory) {
                        memory + STRESS_AVX512_A_INPUT_DIVISOR_OFFSET + STRESS_AVX512_A_INPUT_DIVISOR_DIVIDE * i,
                        memory + STRESS_AVX512_A_OUTPUT_OFFSET + STRESS_AVX512_A_OUTPUT_DIVIDER * i
                        )) {
-            count -= STRESS_PI_COUNT_DIFF * STRESS_AVX512_A_INPUT_DIVIDEND_SIZE;
+            count -= STRESS_PI_COUNT_DIFF * (i + 1);
             return false;
         }
     }
