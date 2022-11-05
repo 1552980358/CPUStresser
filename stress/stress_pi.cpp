@@ -21,27 +21,6 @@ void reset_stress_pi_variables(long &count, long double &result) {
     result = STRESS_PI_DEFAULT_RESULT;
 }
 
-stress_pi_method_t get_stress_pi_method(instruction_set_t *instruction_set, bool enable_avx, double **memory_ptr) {
-
-    if (enable_avx) {
-
-        if (support_avx512(instruction_set)) {
-            return nullptr;
-        }
-
-        if (support_avx256(instruction_set)) {
-            return nullptr;
-        }
-
-        if (support_avx128(instruction_set)) {
-            return nullptr;
-        }
-
-    }
-
-    return nullptr;
-}
-
 #define STRESS_AVX512_A_INPUT_DIVIDEND_SIZE 16
 #define STRESS_AVX512_A_INPUT_DIVIDEND_DIVIDE (STRESS_AVX512_A_INPUT_DIVIDEND_SIZE / 2)
 #define STRESS_AVX512_A_INPUT_DIVISOR_OFFSET STRESS_AVX512_A_INPUT_DIVIDEND_SIZE
@@ -211,6 +190,11 @@ bool stress_pi_avx128(long &count, long double &result, double *memory) {
         result += *(memory + STRESS_AVX128_B_OUTPUT_OFFSET + i);
     }
 
+    return true;
+}
+
+bool stress_pi_fp_dp(long &count, long double &result, double *) {
+    result += (STRESS_PI_DIVIDEND / get_signed_dividend(count += STRESS_PI_COUNT_DIFF));
     return true;
 }
 
