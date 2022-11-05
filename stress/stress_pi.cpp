@@ -198,6 +198,30 @@ bool stress_pi_fp_dp(long &count, long double &result, double *) {
     return true;
 }
 
+#define STRESS_AVX512_MEM_SIZE (STRESS_AVX512_A_INPUT_SIZE + STRESS_AVX512_A_OUTPUT_SIZE)
+#define STRESS_AVX256_MEM_SIZE (STRESS_AVX256_A_INPUT_SIZE + STRESS_AVX256_A_OUTPUT_SIZE)
+#define STRESS_AVX128_MEM_SIZE (STRESS_AVX128_A_INPUT_SIZE + STRESS_AVX128_A_OUTPUT_SIZE)
+stress_pi_method_t get_stress_pi_method(instruction_set_t *instruction_set, bool enable_avx, double **memory) {
+
+    if (enable_avx) {
+
+        if (support_avx512(instruction_set)) {
+            return allocate_mem(memory, STRESS_AVX512_MEM_SIZE) ? stress_pi_avx512 : nullptr;
+        }
+
+        if (support_avx256(instruction_set)) {
+            return allocate_mem(memory, STRESS_AVX256_MEM_SIZE) ? stress_pi_avx256 : nullptr;
+        }
+
+        if (support_avx128(instruction_set)) {
+            return allocate_mem(memory, STRESS_AVX128_MEM_SIZE) ? stress_pi_avx128 : nullptr;
+        }
+
+    }
+
+    return stress_pi_fp_dp;
+}
+
 bool allocate_mem(double **memory_ptr, const int &size) {
     *memory_ptr = (double *) malloc(size);
     return *memory_ptr;
